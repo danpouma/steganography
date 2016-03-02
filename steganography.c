@@ -74,6 +74,62 @@ void write_bitmap(char* file, BITMAP* bitmap);
 
 int main(int argc, char** argv)
 {
+	BITMAP* bmp = NULL;
+
+	char* in_file_name;
+
+	char* out_file_name;
+
+	// probably don't need to use the ifs
+	// seems like overkill
+	int error = 0;
+
+	if (argc < 3)
+	{
+		puts("Not enough parameters;")
+	}
+	else
+	{
+		in_file_name = argv[1];
+		out_file_name = argv[2];
+	}
+
+	if (error == 0)
+	{
+		bmp = read_bitmap(in_file_name);
+
+		if (bmp == NULL)
+		{
+			error = 1;
+			puts("Error loading file")
+		}
+		else
+		{
+			puts("Success loading file")
+		}
+	}
+
+	if (error = 0)
+	{
+		//things look ok
+		//Visit Every Pixel
+		int i;
+		int num_pixels = bmp->info->width * bmp->info->height;
+
+		for(i=0; i<num_pixels;i++)
+		{
+			//create a pixel pointer for first image
+			PIXEL* p;
+			p = (bmp->data+i);
+
+			// output what the pixel data looks like
+			puts(p);
+
+		}
+		//write the bmp to a file
+		//write_bitmap(out_file_name, bmp);
+	}
+
 	return 0;
 }
 
