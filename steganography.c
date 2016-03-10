@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//---------TYPEDEF-----------
+
 typedef struct bitmap BITMAP; 
 typedef struct header HEADER; //bitmap file header
 typedef struct info INFO; //bitmap image info header
@@ -11,8 +13,12 @@ typedef unsigned short WORD;
 typedef unsigned int DWORD;
 
 //uncomment pixel_32 type def and comment pixel_24 to use 32 bit
-//typedef struct pixel_32 PIXEL;
-typedef struct pixel_24 PIXEL;
+//typedef struct pixel_32 PIXEL; //Pixel if using 32 bit bmp
+typedef struct pixel_24 PIXEL; //pixel if using 24 bit bmp
+
+//-------END TYPEDEF---------
+
+//--------STRUCTURES--------
 
 struct bitmap
 {
@@ -71,66 +77,119 @@ struct pixel_32 //32 bit pixel
 
 BITMAP* read_bitmap(char* file);
 void write_bitmap(char* file, BITMAP* bitmap);
+void print_bits( BYTE color );
+
 
 int main(int argc, char** argv)
 {
 	BITMAP* bmp = NULL;
-
 	char* in_file_name;
-
 	char* out_file_name;
-
-	// probably don't need to use the ifs
-	// seems like overkill
 	int error = 0;
 
-	if (argc < 3)
+	// Verify the user input
+	if(argc < 2)
 	{
-		puts("Not enough parameters;")
+		puts("ERROR: Program Input");
+		error = 1;
 	}
 	else
-	{
+	{ //get the file names from the command line
 		in_file_name = argv[1];
 		out_file_name = argv[2];
 	}
 
-	if (error == 0)
+	//file names ok, validate bmp type
+	if(error == 0)
 	{
-		bmp = read_bitmap(in_file_name);
-
-		if (bmp == NULL)
+		bmp=read_bitmap(in_file_name);
+		if(bmp == NULL)
 		{
 			error = 1;
-			puts("Error loading file")
-		}
-		else
-		{
-			puts("Success loading file")
+			puts("ERROR: Loading File");
 		}
 	}
 
-	if (error = 0)
+	if(error == 0)
 	{
 		//things look ok
 		//Visit Every Pixel
 		int i;
 		int num_pixels = bmp->info->width * bmp->info->height;
 
+		//test variable to track num of valid pixels for data hiding
+		int numberOfPixelsForHiding = 0;
+
+		// Loop once to see the data
+		for (int pixel = 0; pixel < num_pixels; pixel++)
+		{
+			//create a pixel pointer for first image
+			PIXEL* p;
+
+			p = (bmp->data + pixel);
+
+			if (p->red > 10)
+			{	
+				print_bits(p->red);
+				numberOfPixelsForHiding++;
+			}
+
+			if (p->blue > 10)
+			{
+				print_bits(p->blue);
+				numberOfPixelsForHiding++;
+			}
+			
+			if (p->green > 10)
+			{
+				print_bits(p->green);
+				numberOfPixelsForHiding++;
+			}
+			
+			//printf("%u\n", p->red);
+			//printf("%u\n", p->blue);
+			//printf("%u\n", p->green);
+		}
+
+		puts("");
+		printf("%d\n", numberOfPixelsForHiding);
+		printf("%d\n",numberOfPixelsForHiding / 8);
+		puts("");
+		/*
 		for(i=0; i<num_pixels;i++)
 		{
 			//create a pixel pointer for first image
 			PIXEL* p;
 			p = (bmp->data+i);
 
-			// output what the pixel data looks like
-			puts(p);
+			// Print for unsigned char
+			printf("%u", p->red);
+			printf("%u", p->blue);
+			printf("%u", p->green);
 
 		}
 		//write the bmp to a file
-		//write_bitmap(out_file_name, bmp);
+		write_bitmap(out_file_name, bmp);
+		*/
 	}
 
 	return 0;
+}
+
+void print_bits( BYTE color )
+{
+	for ( int i = (8 * sizeof(BYTE))-1; i >= 0; i-- )
+	{
+		if (i == 0)
+		{
+			printf("%d", 9);
+		}
+		else
+		{
+			printf( "%u", ( (color >> i) & 1) );
+		}
+	}
+	puts( "" );
 }
 
 //-----FUNCTIONS----
