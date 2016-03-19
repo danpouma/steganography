@@ -126,6 +126,11 @@ int main(int argc, char** argv)
 			//create a pixel pointer for first image
 			PIXEL* p;
 
+			// As of right now I'm considerring
+			// pixels with value greater than 10
+			// as valid for flipping the bit
+			// without affecting the pixel to the 
+			// naked eye
 			p = (bmp->data + pixel);
 
 			if (p->red > 10)
@@ -145,29 +150,15 @@ int main(int argc, char** argv)
 				print_bits(p->green);
 				numberOfPixelsForHiding++;
 			}
-			
-			//printf("%u\n", p->red);
-			//printf("%u\n", p->blue);
-			//printf("%u\n", p->green);
 		}
 
 		puts("");
+
+		// Total number of available pixels
 		printf("%d\n", numberOfPixelsForHiding);
 		printf("%d\n",numberOfPixelsForHiding / 8);
 		puts("");
-		/*
-		for(i=0; i<num_pixels;i++)
-		{
-			//create a pixel pointer for first image
-			PIXEL* p;
-			p = (bmp->data+i);
 
-			// Print for unsigned char
-			printf("%u", p->red);
-			printf("%u", p->blue);
-			printf("%u", p->green);
-
-		}
 		//write the bmp to a file
 		write_bitmap(out_file_name, bmp);
 		*/
