@@ -160,8 +160,7 @@ int main(int argc, char** argv)
 		puts("");
 
 		//write the bmp to a file
-		write_bitmap(out_file_name, bmp);
-		*/
+		//write_bitmap(out_file_name, bmp);
 	}
 
 	return 0;
