@@ -8,7 +8,8 @@ int main(int argc, char** argv)
 	BITMAP* bmp = NULL;
 	char* in_file_name;
 	char* out_file_name;
-	int error = 0;
+	
+	int error;
 
 	// Verify the user input
 	if(argc < 2)
@@ -17,15 +18,18 @@ int main(int argc, char** argv)
 		error = 1;
 	}
 	else
-	{ //get the file names from the command line
+	{ 
+		// No error...
+		error = 0;
+
+		// Get the file names from arguments
 		in_file_name = argv[1];
 		out_file_name = argv[2];
-	}
 
-	//file names ok, validate bmp type
-	if(error == 0)
-	{
+		// Read the bmp via file name
 		bmp=read_bitmap(in_file_name);
+
+		// Verify the bmp file was loaded properly
 		if(bmp == NULL)
 		{
 			error = 1;
@@ -33,7 +37,7 @@ int main(int argc, char** argv)
 		}
 	}
 
-	if(error == 0)
+	if( !error )
 	{
 		//things look ok
 		//Visit Every Pixel
@@ -67,7 +71,7 @@ int main(int argc, char** argv)
 				print_bits(p->blue);
 				numberOfPixelsForHiding++;
 			}
-			
+
 			if (p->green > 10)
 			{
 				print_bits(p->green);
