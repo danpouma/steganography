@@ -4,11 +4,18 @@
 
 void print_bits( BYTE color )
 {
+	/*
 	for ( int i = (8 * sizeof(BYTE))-1; i >= 0; i-- )
 	{
 		printf( "%u", ( (color >> i) & 1) );
 	}
 	puts( "" );
+	*/
+	for(int i = 7; 0 <= i; i --)
+	{
+        printf("%d", (color >> i) & 0x01);
+	}
+	puts("");
 }
 
 //-----FUNCTIONS----
@@ -63,6 +70,8 @@ BITMAP* read_bitmap(char* file)
 		fread(bmp->data, bmp->info->img_size, 1, in_file);
 
 		//PRINT some bitmap info
+
+		/*
 		puts("--------------");
 		puts("BITMAP INFO");
 		puts("--------------");
@@ -73,6 +82,7 @@ BITMAP* read_bitmap(char* file)
 		printf("Image Height:\t%d\n",bmp->info->height);
 		printf("Image offset:\t%d\n",bmp->header->offset);
 		puts("--------------");
+		*/
 
 	}
 	else
